@@ -1,0 +1,248 @@
+--[[
+    EAGLE GUI - V2 [DATABASE UPDATE]
+    ADDED: Fish It 3
+    STRICTLY NO DESIGN CHANGES
+    MODIFIED: Sidebar Text (Indonesian + Bold) & Hub Titles (Bold)
+]]
+
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local LocalPlayer = Players.LocalPlayer
+
+-- Cleanup
+for _, v in pairs(CoreGui:GetChildren()) do
+    if v.Name:match("Eagle_") then v:Destroy() end
+end
+
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = "Eagle_Final_FishUpdate"
+ScreenGui.ResetOnSpawn = false
+
+local FavoriteScripts = {}
+
+-- Drag System
+local function makeDraggable(obj)
+    local dragging, dragStart, startPos
+    obj.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true; dragStart = input.Position; startPos = obj.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            obj.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function() dragging = false end)
+end
+
+-- ==================================================================
+-- LOGIN PAGE
+-- ==================================================================
+local LoginBox = Instance.new("Frame", ScreenGui)
+LoginBox.Size = UDim2.new(0, 380, 0, 400); LoginBox.Position = UDim2.new(0.5, -190, 0.5, -200); LoginBox.BackgroundColor3 = Color3.fromRGB(15, 20, 15); LoginBox.BackgroundTransparency = 0.15
+Instance.new("UICorner", LoginBox).CornerRadius = UDim.new(0, 15)
+local LStroke = Instance.new("UIStroke", LoginBox); LStroke.Color = Color3.fromRGB(76, 126, 42); LStroke.Thickness = 2
+
+local LTitle = Instance.new("TextLabel", LoginBox)
+LTitle.Text = "Log In"; LTitle.Size = UDim2.new(1, 0, 0, 80); LTitle.Font = Enum.Font.GothamMedium; LTitle.TextSize = 45; LTitle.TextColor3 = Color3.new(1,1,1); LTitle.BackgroundTransparency = 1
+
+local KeyIn = Instance.new("TextBox", LoginBox)
+KeyIn.Size = UDim2.new(0, 320, 0, 55); KeyIn.Position = UDim2.new(0.5, -160, 0.5, 0); KeyIn.PlaceholderText = "EAGLE GUI V2"; KeyIn.BackgroundColor3 = Color3.fromRGB(30, 35, 30); KeyIn.TextColor3 = Color3.new(1,1,1); KeyIn.Font = Enum.Font.GothamMedium; KeyIn.TextSize = 16; Instance.new("UICorner", KeyIn)
+
+local LogBtn = Instance.new("TextButton", LoginBox)
+LogBtn.Size = UDim2.new(0, 320, 0, 55); LogBtn.Position = UDim2.new(0.5, -160, 0.7, 0); LogBtn.Text = "Log in"; LogBtn.BackgroundColor3 = Color3.fromRGB(76, 126, 42); LogBtn.TextColor3 = Color3.new(1,1,1); LogBtn.Font = Enum.Font.GothamBold; LogBtn.TextSize = 20; Instance.new("UICorner", LogBtn)
+
+-- ==================================================================
+-- MAIN HUB
+-- ==================================================================
+local MainHub = Instance.new("Frame", ScreenGui)
+MainHub.Size = UDim2.new(0, 600, 0, 450); MainHub.Position = UDim2.new(0.5, -300, 0.5, -225); MainHub.BackgroundColor3 = Color3.fromRGB(10, 12, 10); MainHub.Visible = false
+Instance.new("UICorner", MainHub).CornerRadius = UDim.new(0, 15)
+local HStroke = Instance.new("UIStroke", MainHub); HStroke.Color = Color3.fromRGB(76, 126, 42); HStroke.Thickness = 2
+
+local Sidebar = Instance.new("Frame", MainHub)
+Sidebar.Size = UDim2.new(0, 130, 1, 0); Sidebar.BackgroundColor3 = Color3.fromRGB(15, 18, 15); Sidebar.BorderSizePixel = 0
+Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 15)
+local SLayout = Instance.new("UIListLayout", Sidebar); SLayout.Padding = UDim.new(0, 10); SLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+Instance.new("UIPadding", Sidebar).PaddingTop = UDim.new(0, 120)
+
+local Header = Instance.new("Frame", MainHub)
+Header.Size = UDim2.new(1, 0, 0, 100); Header.BackgroundTransparency = 1
+
+local LogoBox = Instance.new("Frame", Header)
+LogoBox.Size = UDim2.new(0, 75, 0, 75); LogoBox.Position = UDim2.new(0, 20, 0, 15); LogoBox.BackgroundColor3 = Color3.fromRGB(20, 40, 20)
+local LBStroke = Instance.new("UIStroke", LogoBox); LBStroke.Color = Color3.fromRGB(76, 126, 42); LBStroke.Thickness = 2; Instance.new("UICorner", LogoBox).CornerRadius = UDim.new(0, 10)
+
+local EagleLogo = Instance.new("ImageLabel", LogoBox)
+EagleLogo.Size = UDim2.new(0.85, 0, 0.85, 0); EagleLogo.Position = UDim2.new(0.075, 0, 0.075, 0); EagleLogo.Image = "rbxassetid://84142290849133"; EagleLogo.BackgroundTransparency = 1
+
+local Title = Instance.new("TextLabel", Header)
+Title.Text = "EAGLE GUI V2"; Title.Position = UDim2.new(0, 110, 0, 18); Title.Size = UDim2.new(0, 250, 0, 40); Title.Font = Enum.Font.GothamBlack; Title.TextSize = 35; Title.TextColor3 = Color3.fromRGB(76, 126, 42); Title.TextXAlignment = 0; Title.BackgroundTransparency = 1; Instance.new("UIStroke", Title).Thickness = 2.5
+
+local Div1 = Instance.new("Frame", Header); Div1.Size = UDim2.new(0, 240, 0, 1); Div1.Position = UDim2.new(0, 110, 0, 54); Div1.BackgroundColor3 = Color3.fromRGB(76, 126, 42); Div1.BackgroundTransparency = 0.5
+local Div2 = Instance.new("Frame", Header); Div2.Size = UDim2.new(0, 260, 0, 2); Div2.Position = UDim2.new(0, 110, 0, 58); Div2.BackgroundColor3 = Color3.fromRGB(76, 126, 42)
+
+local SubTitle = Instance.new("TextLabel", Header)
+SubTitle.Text = "MADE BY ELERNATE V2"; SubTitle.Position = UDim2.new(0, 110, 0, 65); SubTitle.Size = UDim2.new(0, 200, 0, 20); SubTitle.Font = Enum.Font.GothamBold; SubTitle.TextSize = 14; SubTitle.TextColor3 = Color3.fromRGB(76, 126, 42); SubTitle.TextXAlignment = 0; SubTitle.BackgroundTransparency = 1
+
+local CloseBtn = Instance.new("TextButton", Header)
+CloseBtn.Size = UDim2.new(0, 40, 0, 40); CloseBtn.Position = UDim2.new(1, -55, 0, 30); CloseBtn.Text = "✕"; CloseBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30); CloseBtn.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", CloseBtn)
+
+-- PAGES
+local Pages = Instance.new("Frame", MainHub)
+Pages.Size = UDim2.new(1, -150, 1, -110); Pages.Position = UDim2.new(0, 140, 0, 110); Pages.BackgroundTransparency = 1
+
+local function createPage(name)
+    local p = Instance.new("ScrollingFrame", Pages); p.Name = name; p.Size = UDim2.new(1, 0, 1, 0); p.Visible = false; p.BackgroundTransparency = 1; p.ScrollBarThickness = 2; p.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    return p
+end
+
+local HomePage = createPage("Home")
+local HubPage = createPage("ScriptHub")
+local FavPage = createPage("Favorites")
+local SettPage = createPage("Settings")
+
+-- ==================================================================
+-- CORE FUNCTIONS
+-- ==================================================================
+local function execute(url)
+    local success, result = pcall(function() return game:HttpGet(url) end)
+    if success then loadstring(result)() end
+end
+
+local function updateFavorites()
+    FavPage:ClearAllChildren()
+    local FL = Instance.new("UIGridLayout", FavPage); FL.CellSize = UDim2.new(0, 190, 0, 150); FL.CellPadding = UDim2.new(0, 10, 0, 10)
+    for name, url in pairs(FavoriteScripts) do createIconCard(FavPage, name, url, false) end
+end
+
+function createIconCard(parent, name, url, isHub)
+    local Card = Instance.new("Frame", parent); Card.Name = name; Card.BackgroundColor3 = Color3.fromRGB(20, 25, 20); Instance.new("UICorner", Card)
+    local strk = Instance.new("UIStroke", Card); strk.Color = Color3.fromRGB(40, 50, 40)
+    local IconBox = Instance.new("Frame", Card); IconBox.Size = UDim2.new(0, 50, 0, 50); IconBox.Position = UDim2.new(0.5, -25, 0.1, 0); IconBox.BackgroundColor3 = Color3.fromRGB(10, 15, 10); Instance.new("UICorner", IconBox); local s = Instance.new("UIStroke", IconBox); s.Color = Color3.fromRGB(76, 126, 42)
+    local IconImg = Instance.new("ImageLabel", IconBox); IconImg.Size = UDim2.new(0.7, 0, 0.7, 0); IconImg.Position = UDim2.new(0.15, 0, 0.15, 0); IconImg.Image = "rbxassetid://109367054692674"; IconImg.BackgroundTransparency = 1; IconImg.ImageColor3 = Color3.fromRGB(76, 126, 42)
+    
+    -- NAMA SCRIPT (DIUBAH MENJADI TEBAL / GOTHAMBLACK)
+    local Label = Instance.new("TextLabel", Card); Label.Size = UDim2.new(1, 0, 0, 25); Label.Position = UDim2.new(0, 0, 0.48, 0); Label.Text = name; Label.TextColor3 = Color3.new(1,1,1); Label.Font = Enum.Font.GothamBlack; Label.TextSize = 12; Label.BackgroundTransparency = 1
+    
+    local ExecBtn = Instance.new("TextButton", Card); ExecBtn.Size = UDim2.new(0, 150, 0, 30); ExecBtn.Position = UDim2.new(0.5, -75, 0.72, 0); ExecBtn.Text = "Execute"; ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 40, 200); ExecBtn.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", ExecBtn)
+    ExecBtn.MouseButton1Click:Connect(function() execute(url) end)
+    if isHub then
+        local FavBtn = Instance.new("TextButton", Card); FavBtn.Size = UDim2.new(0, 30, 0, 30); FavBtn.Position = UDim2.new(1, -35, 0, 5); FavBtn.Text = "★"; FavBtn.BackgroundTransparency = 1; FavBtn.TextColor3 = (FavoriteScripts[name] and Color3.fromRGB(255, 215, 0) or Color3.fromRGB(150, 150, 150)); FavBtn.TextSize = 22
+        FavBtn.MouseButton1Click:Connect(function()
+            if FavoriteScripts[name] then FavoriteScripts[name] = nil; FavBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+            else FavoriteScripts[name] = url; FavBtn.TextColor3 = Color3.fromRGB(255, 215, 0) end
+            updateFavorites()
+        end)
+    end
+end
+
+-- DATABASE LENGKAP (44 TOTAL)
+local scripts_db = {
+    {"Fish It 3", "https://rscripts.net/raw/fish-it-keyless-free-rayfield-ui-and-open-source_1762045588649_cREAukITrZ.txt"},
+    {"AetherHub Fish It", "https://raw.githubusercontent.com/DuxiiT/Aether/refs/heads/main/loader.lua"},
+    {"MoonKing Fish It 2", "https://pastefy.app/6j4cXiIi/raw"},
+    {"Chronix Hub", "https://raw.githubusercontent.com/Enchan7a/sambung-kata/refs/heads/master/chronix-ontop"},
+    {"Administrator", "https://pastefy.app/Ku9BbJj0/raw"},
+    {"FE Trolling Animation", "https://raw.githubusercontent.com/3LD4D0/FE-TROLLING-PLAYER-R6-R15/6eff8792afed57458d5114478b453a6f6bce5799/Fe%20trolling%20Player%20R6%20AND%20R15"},
+    {"Fe Adidas R15", "https://raw.githubusercontent.com/HarcangiRobloxProjects/AnimationV2/refs/heads/main/script.lua"},
+    {"OpAdmin Supreme", "https://raw.githubusercontent.com/addihallstar/opadminsupreme/refs/heads/main/opadmin_new.lua"},
+    {"Ultimate Fling GUI", "https://raw.githubusercontent.com/sypcerr/scripts/refs/heads/main/UFGUI"},
+    {"Sypcerd Collection", "https://raw.githubusercontent.com/sypcerr/FECollection/refs/heads/main/script.lua"},
+    {"Universal Aimbot", "https://pastebin.com/raw/D3uy9ypJ"},
+    {"Universal Aimbot V2", "https://rawscripts.net/raw/Universal-Script-Universal-Keyless-Advanced-Aimbot-And-Esp-Gui-90617"},
+    {"Spawn Character", "https://raw.githubusercontent.com/Errrorguy/spawn-anyone/61573a459b97785b24e8eae620cbd2ae8985764f/spawn-anyone"},
+    {"Paranoia Admin", "https://idx.lol/latest.lua"},
+    {"SCP 049 FE", "https://raw.githubusercontent.com/FrostbitenDev/Scp049-Frostbite/main/SCP049_Final.lua"},
+    {"Blackhole V27", "https://pastebin.com/raw/eTb7GBqA"},
+    {"YouTube Music", "https://raw.githubusercontent.com/Dan41/Roblox-Scripts/refs/heads/main/Youtube%20Music%20Player/YoutubeMusicPlayer.lua"},
+    {"RSC HUB", "https://raw.githubusercontent.com/gObl00x/My-Scripts/refs/heads/main/RSC%20Hub%20by%20gObl00x.lua"},
+    {"MOVE BLOCK V20", "https://raw.githubusercontent.com/axionscripts1/Move-Blocks-v20/refs/heads/main/README.md"},
+    {"FE SANDEVISTAN", "https://raw.githubusercontent.com/mahowaga51-cmd/FE-Scripts/refs/heads/main/FE%20Sandevistan%20V6"},
+    {"R4D REVAMP V4", "https://raw.githubusercontent.com/M1ZZ001/R4D-Revamp/refs/heads/main/Official%20R4D%20Revamp"},
+    {"AVATAR CHANGER", "https://raw.githubusercontent.com/darkdexv2/universalavatarchanger/main/avatarchanger"},
+    {"INVISIBLE FLY", "https://rawscripts.net/raw/Universal-Script-Invinicible-Flight-R15-45414"},
+    {"LYRA HUB", "https://rawscripts.net/raw/Brookhaven-RP-Lyra-Hub-Brookhaven-81184"},
+    {"BACKDOOR SCANNER", "https://bitbucket.org/projects_early26/new/raw/0cd464afb03269ef1134a30fc8c407162e88dcac/v1.2.5.lua"},
+    {"LALOL HUB", "https://raw.githubusercontent.com/its-LALOL/LALOL-Hub/main/Backdoor-Scanner/script"},
+    {"Tiger X", "https://raw.githubusercontent.com/balintTheDevX/Tiger-X-V3/main/Tiger%20X%20V3.5%20Fixed"},
+    {"Brookhaven Sander", "https://rawscripts.net/raw/Brookhaven-RP-Sander-XY-35845"},
+    {"Guest666", "https://raw.githubusercontent.com/gObl00x/My-Scripts/refs/heads/main/Guest%20666.lua"},
+    {"FE Emotes", "https://raw.githubusercontent.com/Giangplay/Script/main/Emote.lua"},
+    {"Ro.exploit", "https://scriptblox.com/raw/Universal-Script-RoXploit-by-KrystalTeam-9328"},
+    {"Immortality FE", "https://rawscripts.net/raw/Universal-Script-PATCHMA-HUB-v45-universal-hats-plus-aligned-hats-by-MyWorld-30918"},
+    {"John doe", "https://pastebin.com/raw/JwUdxg8y"},
+    {"Kidnap FE", "https://pastebin.com/raw/vP2D2vnC"},
+    {"R6 FE", "https://raw.githubusercontent.com/Imagnir/r6_anims_for_r15/main/r6_anims.lua"},
+    {"Sharingan", "https://pastebin.com/raw/bidQM5Bz"},
+    {"c00lgui", "https://pastebin.com/raw/B7S86t6t"},
+    {"Keyboard", "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt"},
+    {"Dark Hacker", "https://raw.githubusercontent.com/Angelo-Gitland/Dark-Hacker-Gui-By-Lua-Land-DISCONTINUED/refs/heads/main/Dark%20Hacker%20Gui%20By%20Lua%20Land"},
+    {"Prison Life", "https://pastebin.com/raw/BBmCUQo"},
+    {"Ghosthub", "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub"},
+    {"Hanif GUI", "https://pastebin.com/raw/E5k09bh1"},
+    {"F3X PANEL", "https://raw.githubusercontent.com/SkireScripts/F3X-Panel/main/Main.lua"},
+    {"Zenix mods", "https://raw.githubusercontent.com/ZynixMoz/SkyeMoz/refs/heads/main/MozCraft/Main"}
+}
+
+local SearchBar = Instance.new("TextBox", HubPage)
+SearchBar.Size = UDim2.new(1, -20, 0, 35); SearchBar.PlaceholderText = "Search Scripts..."; SearchBar.BackgroundColor3 = Color3.fromRGB(30, 35, 30); SearchBar.TextColor3 = Color3.new(1,1,1); SearchBar.Font = Enum.Font.GothamMedium; Instance.new("UICorner", SearchBar)
+
+local HubGrid = Instance.new("Frame", HubPage); HubGrid.Size = UDim2.new(1, 0, 1, -45); HubGrid.Position = UDim2.new(0, 0, 0, 45); HubGrid.BackgroundTransparency = 1
+local GLayout = Instance.new("UIGridLayout", HubGrid); GLayout.CellSize = UDim2.new(0, 190, 0, 150); GLayout.CellPadding = UDim2.new(0, 10, 0, 10)
+
+for _, s in pairs(scripts_db) do createIconCard(HubGrid, s[1], s[2], true) end
+
+-- NAVIGATION
+local function show(name)
+    for _,p in pairs(Pages:GetChildren()) do p.Visible = false end
+    
+    -- Map Internal Name to Display Name for Logic
+    local target = name
+    if name == "Home" or name == "Home" then target = "Home"
+    elseif name == "ScriptHub" or name == "Script hub" then target = "ScriptHub"
+    elseif name == "Favorites" or name == "Favorit" then target = "Favorites"
+    elseif name == "Settings" or name == "Pengaturan" then target = "Settings" end
+    
+    Pages[target].Visible = true
+    
+    if target == "Home" then 
+        HomePage:ClearAllChildren()
+        local Layout = Instance.new("UIListLayout", HomePage); Layout.Padding = UDim.new(0, 10); Layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        local AvFrame = Instance.new("Frame", HomePage); AvFrame.Size = UDim2.new(0, 90, 0, 90); AvFrame.BackgroundColor3 = Color3.fromRGB(20, 30, 20); Instance.new("UICorner", AvFrame).CornerRadius = UDim.new(1, 0); Instance.new("UIStroke", AvFrame).Color = Color3.fromRGB(76, 126, 42)
+        local AvImg = Instance.new("ImageLabel", AvFrame); AvImg.Size = UDim2.new(0.9, 0, 0.9, 0); AvImg.Position = UDim2.new(0.05, 0, 0.05, 0); AvImg.BackgroundTransparency = 1; AvImg.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..LocalPlayer.UserId.."&width=420&height=420&format=png"; Instance.new("UICorner", AvImg).CornerRadius = UDim.new(1, 0)
+        local function createInfoBox(title, value)
+            local Box = Instance.new("Frame", HomePage); Box.Size = UDim2.new(0, 400, 0, 45); Box.BackgroundColor3 = Color3.fromRGB(20, 25, 20); Instance.new("UICorner", Box); local str = Instance.new("UIStroke", Box); str.Color = Color3.fromRGB(40, 60, 40)
+            local t = Instance.new("TextLabel", Box); t.Size = UDim2.new(0.4, 0, 1, 0); t.Position = UDim2.new(0, 15, 0, 0); t.Text = title; t.TextColor3 = Color3.fromRGB(76, 126, 42); t.Font = Enum.Font.GothamBold; t.TextSize = 14; t.BackgroundTransparency = 1; t.TextXAlignment = 0
+            local v = Instance.new("TextLabel", Box); v.Size = UDim2.new(0.6, 0, 1, 0); v.Position = UDim2.new(0.4, 0, 0, 0); v.Text = value; v.TextColor3 = Color3.new(1,1,1); v.Font = Enum.Font.GothamMedium; v.TextSize = 14; v.BackgroundTransparency = 1; v.TextXAlignment = 0
+        end
+        createInfoBox("Account Name:", LocalPlayer.Name)
+        createInfoBox("Current Game:", MarketplaceService:GetProductInfo(game.PlaceId).Name)
+        createInfoBox("Server Count:", #Players:GetPlayers() .. " Players")
+        createInfoBox("Executor Used:", (identifyexecutor and identifyexecutor() or "Unknown"))
+    elseif target == "Favorites" then updateFavorites()
+    elseif target == "Settings" then SettPage:ClearAllChildren(); local CS = Instance.new("TextLabel", SettPage); CS.Size = UDim2.new(1, 0, 1, 0); CS.Text = "COMING SOON"; CS.Font = Enum.Font.GothamBlack; CS.TextSize = 40; CS.TextColor3 = Color3.fromRGB(76, 126, 42); CS.BackgroundTransparency = 1 end
+end
+
+-- SIDEBAR BUTTONS (DIUBAH KE BAHASA INDONESIA + TEBAL)
+local function side(txt, pageName)
+    local b = Instance.new("TextButton", Sidebar); b.Size = UDim2.new(0, 110, 0, 35); b.Text = txt; b.BackgroundColor3 = Color3.fromRGB(30, 40, 30); b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.GothamBlack; b.TextSize = 13; Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function() show(pageName) end)
+end
+
+side("Home", "Home")
+side("Script hub", "ScriptHub")
+side("Favorit", "Favorites")
+side("Pengaturan", "Settings")
+
+local ToggleBtn = Instance.new("ImageButton", ScreenGui); ToggleBtn.Size = UDim2.new(0, 60, 0, 60); ToggleBtn.Position = UDim2.new(0, 10, 0.5, -30); ToggleBtn.Image = "rbxassetid://84142290849133"; ToggleBtn.BackgroundColor3 = Color3.fromRGB(20, 30, 20); ToggleBtn.Visible = false; Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1,0); Instance.new("UIStroke", ToggleBtn).Color = Color3.fromRGB(76, 126, 42)
+
+LogBtn.MouseButton1Click:Connect(function() if KeyIn.Text == "EAGLE GUI V2" then LoginBox.Visible = false; MainHub.Visible = true; show("Home") end end)
+CloseBtn.MouseButton1Click:Connect(function() MainHub.Visible = false; ToggleBtn.Visible = true end)
+ToggleBtn.MouseButton1Click:Connect(function() MainHub.Visible = true; ToggleBtn.Visible = false end)
+
+makeDraggable(LoginBox); makeDraggable(MainHub); makeDraggable(ToggleBtn)
